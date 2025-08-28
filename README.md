@@ -1,6 +1,6 @@
 # 🌟 GCC Stock Exchange Scraper
 
-Advanced concurrent streaming scraper for all GCC stock exchanges with professional logging, rate limiting, retry logic, and real-time data streaming.
+Concurrent streaming scraper for all GCC stock exchanges with professional logging, rate limiting, retry logic, and real-time data streaming.
 
 ## 📊 Supported Exchanges
 
