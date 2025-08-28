@@ -1,0 +1,50 @@
+# Bahrain Bourse Configuration
+exchange:
+  name: "Bahrain Bourse"
+  code: "BAHRAIN"
+  country: "Bahrain"
+  base_url: "https://bahrainbourse.com"
+  summary_url: "https://bahrainbourse.com/en/Quotes%20and%20Market/Stocks/daily-trading-summary"
+
+selectors:
+  # Required selectors for validation
+  company_name:
+    - "h1"
+    - "h2"
+    - ".company-title"
+    - "#companyName"
+  
+  company_cards:
+    - "td:first-child a"
+    - ".company-link"
+    - "a[href*='company']"
+  
+  # Main table and company extraction
+  companies_table: "#bhbTable"
+  company_rows: "table#bhbTable tbody tr"
+  company_link: "td:first-child a"
+  
+  # Company page selectors
+  overview_tab: "a.nav-link[href='#overview'][data-toggle='pill']"
+  overview_content: "#overview"
+  board_section: ".//div[contains(@id, 'CompaniesDirectors') or contains(@class, 'directors')]"
+  board_table: "table"
+  
+# Concurrent processing settings
+concurrency:
+  max_concurrent: 3
+  rate_limit_delay: 1.5
+  retry_attempts: 3
+  pool_size: 3
+
+navigation:
+  # Wait times for dynamic content
+  page_load_wait: 3
+  tab_click_wait: 2
+  content_load_wait: 3
+
+# Bahrain-specific scraping settings
+scraping:
+  max_retries: 3
+  retry_delay_seconds: 2
+  random_delay_range: [2, 4]  # Random delay between 2-4 seconds

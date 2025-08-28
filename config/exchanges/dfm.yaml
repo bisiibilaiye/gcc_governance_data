@@ -1,0 +1,77 @@
+# Dubai Financial Market (DFM) Configuration
+exchange:
+  name: "Dubai Financial Market"
+  code: "DFM"
+  country: "UAE"
+  base_url: "https://www.dfm.ae"
+  main_url: "https://www.dfm.ae/the-exchange/market-information/listed-securities/equities"
+
+selectors:
+  # Required selectors for validation
+  company_name:
+    - '//*[@id="__layout"]/div/div[3]/section/div/div/div[2]/span'
+    - '//span[@class="block text-lg"]'
+    - 'h1, h2, h3, h4, h5'
+  
+  company_cards:
+    - '//a[contains(@href, "/company-profile")]'
+    - '.company-link'
+    - 'a[href*="company"]'
+  
+  company_table:
+    - '//*[@id="__layout"]/div/div[3]/section[2]/div/div[3]'
+    - '.companies-table'
+    - 'table'
+  
+  # Main companies section
+  companies_section: '//*[@id="__layout"]/div/div[3]/section[2]/div/div[3]'
+  
+  # Profile page selectors (updated with correct XPaths)
+  profile_info_xpath: '/html/body/div/div/div/div[3]/div[3]/section[1]/div/div[2]/div'
+  additional_info_xpath: '/html/body/div/div/div/div[3]/div[3]/section[1]/div/div[3]/div'
+  company_name_xpath: '//*[@id="__layout"]/div/div[3]/section/div/div/div[2]/span'
+  
+  # Company details grid (relative selectors within profile_info_xpath)
+  info_blocks: './/div[contains(@class, "grid")]/div | .//div/div'
+  info_key: './/span[contains(@class, "text-xs") or contains(@class, "text-sm")]'
+  info_value: './/span[@class="block"] | .//span[contains(@class, "font")]'
+  
+  # Board members section (updated with correct XPath)
+  board_info_xpath: '/html/body/div/div/div/div[3]/div[3]/section[2]/div[1]/div/div'
+  member_xpath: './/div[@class="flex py-4 border-b gap-x-4 rtl:gap-x-reverse"]'
+  name_xpath: './/span[@class="block text-lg"]'
+  position_xpath: './/div[@class="block text-sm uppercase text-muted"]'
+
+navigation:
+  render_wait: 3
+  timeout: 20
+
+# DFM-specific browser settings (JavaScript-heavy site)
+browser:
+  headless: true
+  window_size: "1920,1080"
+  disable_images: false  # Keep images for layout
+  disable_css: false     # Keep CSS for styling
+  
+chrome_options:
+  - "--no-sandbox"
+  - "--disable-dev-shm-usage"
+  - "--disable-blink-features=AutomationControlled"
+  - "--disable-extensions"
+  - "--start-maximized"
+  # Remove JavaScript-disabling options for DFM
+  # - "--disable-javascript"  # DFM needs JavaScript!
+
+# DFM-specific scraping settings  
+scraping:
+  max_retries: 3
+  retry_delay_seconds: 5  # Increased for JavaScript loading
+  page_load_wait: 8       # Longer wait for JavaScript rendering
+  default_timeout: 45     # Increased timeout for complex pages
+
+# Concurrent processing settings
+concurrency:
+  max_concurrent: 4        # Max 4 concurrent requests
+  rate_limit_delay: 0.8    # 0.8 second delay between requests  
+  retry_attempts: 3        # Retry failed requests up to 3 times
+  pool_size: 4            # Browser pool size

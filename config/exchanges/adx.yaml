@@ -1,0 +1,77 @@
+# Abu Dhabi Securities Exchange (ADX) Configuration
+exchange:
+  name: "Abu Dhabi Securities Exchange"
+  code: "ADX"
+  country: "UAE"
+  base_url: "https://www.adx.ae"
+  listing_url: "https://www.adx.ae/issuers/issuers-information/issuers-directory"
+
+selectors:
+  # Company name selectors (in order of preference)
+  company_name:
+    - "//*[@id='content']/div[4]/div/div/div/div/div/div[1]/h4"
+    - "//h4[contains(@class, 'company-name')]"
+    - "//div[contains(@class, 'company-profile')]//h4"
+    
+  # Sector information
+  sector:
+    - "//*[@id='content']/div[4]/div/div/div/div/div/div[1]/div[1]"
+    - "//div[contains(@class, 'sector-info')]"
+    - "//div[contains(text(), 'Sector')]/following-sibling::div"
+    
+  # Company listing page
+  company_cards: "//div[contains(@class, 'card-body')]//a[contains(@href, '/company-profile/overview')]"
+
+  # Overview tab fields - updated for current page structure
+  listing_date:
+    - "//div[contains(text(), 'LISTING DATE')]/following-sibling::div"
+    - "/html/body/div[1]/div[1]/main/div/div[6]/div/div/div/div/div[2]//div[contains(text(), 'LISTING DATE')]/following-sibling::div"
+    - "//*[@id='content']/div[6]/div/div/div/div/div[2]/div/div[1]/div/div[2]/div/div[2]"
+    
+  incorporation:
+    - "//div[contains(text(), 'INCORPORATION')]/following-sibling::div"
+    - "/html/body/div[1]/div[1]/main/div/div[6]/div/div/div/div/div[2]//div[contains(text(), 'INCORPORATION')]/following-sibling::div"
+    - "//*[@id='content']/div[6]/div/div/div/div/div[2]/div/div[1]/div/div[3]/div/div[2]" 
+    
+  share_capital:
+    - "//div[contains(text(), 'SHARE CAPITAL')]/following-sibling::div"
+    - "/html/body/div[1]/div[1]/main/div/div[6]/div/div/div/div/div[2]//div[contains(text(), 'SHARE CAPITAL')]/following-sibling::div"
+    - "//*[@id='content']/div[6]/div/div/div/div/div[2]/div/div[1]/div/div[1]/div/div[2]"
+    
+  company_type:
+    - "//div[contains(text(), 'COMPANY TYPE')]/following-sibling::div"
+    - "/html/body/div[1]/div[1]/main/div/div[6]/div/div/div/div/div[2]//div[contains(text(), 'COMPANY TYPE')]/following-sibling::div"
+    - "//*[@id='content']/div[6]/div/div/div/div/div[2]/div/div[2]/div/div[1]/div/div[2]"
+    
+  auditor:
+    - "//div[contains(text(), 'AUDITOR')]/following-sibling::div"
+    - "/html/body/div[1]/div[1]/main/div/div[6]/div/div/div/div/div[2]//div[contains(text(), 'AUDITOR')]/following-sibling::div"
+    - "//*[@id='content']/div[6]/div/div/div/div/div[2]/div/div[2]/div/div[2]/div/div[2]"
+
+  # Board members section (shareholders page)
+  board_section: "/html/body/div[1]/div[1]/main/div/div[6]/div/div/div/div[1]/div"
+  shareholders_board_section: "/html/body/div[1]/div[1]/main/div/div[6]/div/div/div/div[1]/div"
+  board_cards: "div.financial-report_card"
+  board_tab: "Shareholders & Board"
+
+# Concurrent processing settings
+concurrency:
+  max_concurrent: 5
+  rate_limit_delay: 1.0
+  retry_attempts: 3
+  pool_size: 3
+
+navigation:
+  # Scrolling configuration for company listing
+  max_scroll_attempts: 15
+  scroll_strategies:
+    - "window.scrollTo(0, document.body.scrollHeight);"
+    - "window.scrollTo(0, document.body.scrollHeight * 0.75);"
+  scroll_wait_time: 3
+
+# ADX-specific scraping settings
+scraping:
+  max_retries: 3
+  retry_delay_seconds: 5
+  page_load_wait: 5
+  skeleton_loading_timeout: 30

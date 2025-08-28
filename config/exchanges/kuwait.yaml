@@ -1,0 +1,74 @@
+# Boursa Kuwait Configuration
+exchange:
+  name: "Boursa Kuwait"
+  code: "KUWAIT"
+  country: "Kuwait"
+  base_url: "https://www.boursakuwait.com.kw"
+  listing_url: "https://www.boursakuwait.com.kw/en/participants/participants/listed-companies"
+
+selectors:
+  # Required selectors for validation
+  company_name:
+    - "h1"
+    - "h2"
+    - ".company-title"
+    - "#companyName"
+  
+  company_cards:
+    - "td:nth-child(5) a"
+    - ".company-link"
+    - "a[href*='company']"
+  
+  company_listing:
+    - "table.table tbody tr"
+    - ".companies-table tr"
+    - "tbody tr"
+  
+  # Main table and company extraction
+  companies_table: "table.table tbody tr"
+  company_link: "td:nth-child(5) a"  # Name column link
+  
+  # Management tab
+  management_tab: "Management"
+  
+  # Board and management sections
+  board_sections: "div.stock-profile-table-wrapper"
+  board_table_rows: "table tbody tr"
+
+auditor_standardization:
+  # Auditor firm name mappings for consistency
+  firm_mappings:
+    # Ernst & Young variations
+    ".*ernst\\s*&\\s*young.*|.*ey.*aiban.*|.*earnest\\s*&\\s*young.*": "Ernst & Young"
+    # Deloitte variations  
+    ".*deloitte.*|.*delotte.*wazzan.*": "Deloitte & Touche"
+    # KPMG variations
+    ".*kpmg.*qenae.*|.*kpmg.*": "KPMG"
+    # RSM variations
+    ".*rsm.*bazie.*|.*rsm.*albazie.*|.*bazie.*rsm.*": "RSM Al-Bazie"
+    # Grant Thornton variations
+    ".*grant\\s*thornton.*|.*thornton.*qatami.*|.*qatami.*aiban.*": "Grant Thornton"
+    # BDO variations
+    ".*bdo.*nisf.*|.*nisf.*partner.*|.*al\\s*nesf.*": "BDO Al Nisf"
+    # PwC variations
+    ".*price.*water.*|.*pwc.*": "PricewaterhouseCoopers"
+    # Other specific firms
+    ".*rodl.*|.*rodel.*burgan.*": "Rodl Middle East"
+    ".*albazie.*legal.*accountant.*": "Albazie & Co"
+    ".*crowe.*muhanna.*": "Crowe Al Muhanna"
+
+# Concurrent processing settings
+concurrency:
+  max_concurrent: 4
+  rate_limit_delay: 0.8
+  retry_attempts: 3
+  pool_size: 4
+
+navigation:
+  page_load_wait: 10
+  retry_wait: 10
+
+# Kuwait-specific scraping settings
+scraping:
+  max_retries: 3
+  retry_delay_seconds: 3

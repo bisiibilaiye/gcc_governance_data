@@ -1,0 +1,113 @@
+# Saudi Exchange (Tadawul) Configuration
+exchange:
+  name: "Saudi Exchange"
+  code: "SAUDI"
+  country: "Saudi Arabia"
+  base_url: "https://www.saudiexchange.sa"
+  directory_url: "https://www.saudiexchange.sa/wps/portal/saudiexchange/trading/participants-directory/issuer-directory"
+
+# Advanced anti-detection settings for Saudi Exchange
+browser:
+  headless: true
+  window_size: "1920,1080"
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+
+chrome_options:
+  - "--no-sandbox"
+  - "--disable-dev-shm-usage"
+  - "--disable-blink-features=AutomationControlled"
+  - "--disable-extensions"
+  - "--start-maximized"
+
+selectors:
+  # Required selectors for validation
+  company_name:
+    - ".company-name p"
+    - "[class*='company'] p"
+    - "h1"
+    - "h2"
+  
+  company_cards:
+    - "div.result-table ul#companyList-appender-id li a"
+    - "ul#companyList-appender-id li a"
+    - ".result-table li a"
+    - "#companyList-appender-id li a"
+  
+  company_list:
+    - "div.result-table ul#companyList-appender-id li"
+    - "ul#companyList-appender-id li"
+    - ".result-table li"
+    - "#companyList-appender-id li"
+  
+  # Company listing selectors (multiple fallbacks)
+  company_list_selectors:
+    - "div.result-table ul#companyList-appender-id li"
+    - "ul#companyList-appender-id li"
+    - ".result-table li"
+    - "#companyList-appender-id li"
+  
+  # Company information extraction
+  company_name_element: ".company-name p"
+  company_name_fallback: "[class*='company'] p"
+  price_change: ".company-name div[class^='price']"
+  
+  # Company details
+  detail_elements: ".symbol-name-code .col-box"
+  detail_label: ".col-name"
+  detail_value: ".col-value"
+  
+  # Profile link
+  profile_link: ".//a[contains(@href, 'profile')]"
+  
+  # Pagination selectors (multiple fallbacks)
+  pagination_selectors:
+    - "ul#pagination-ul li.next"
+    - "ul.pagination li.next"
+    - ".pagination .next"
+    - "[class*='pagination'] [class*='next']"
+    - "a[aria-label='Next']"
+    - "button[aria-label='Next']"
+  
+  # Profile page selectors
+  profile_container_selectors:
+    - '//*[@id="layoutContainers"]/div[3]/div[3]/div/section/section[4]/div[2]/div[2]'
+    - '//div[contains(@class, "company_management")]'
+    - '//div[contains(@class, "company-details")]'
+  
+  # Company details on profile
+  details_container: "div.company_management_tab_dtl"
+  detail_items: "ul > li"
+  detail_key: "h4"
+  detail_value_element: "p"
+  
+  # Management tabs and data
+  management_tabs:
+    - "div.company_management_tab ul li"
+    - "div[class*='tab'] ul li" 
+    - "ul[class*='tab'] li"
+  
+  management_container: "div.company_management_tab_dtl"
+  management_items: "ul > li"
+  management_role: "h4"
+  management_persons: "p"
+  management_name: "strong"
+
+navigation:
+  initial_wait: 10
+  pagination_wait: 8
+  profile_wait: 8
+  tab_wait: 5
+  max_scroll_attempts: 15
+
+# Concurrent processing settings
+concurrency:
+  max_concurrent: 3
+  rate_limit_delay: 1.2
+  retry_attempts: 3
+  pool_size: 3
+
+# Saudi-specific scraping settings
+scraping:
+  max_retries: 3
+  retry_delay_seconds: 3
+  screenshot_on_error: true

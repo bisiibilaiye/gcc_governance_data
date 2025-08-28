@@ -1,0 +1,67 @@
+# Muscat Securities Market (MSX) Configuration
+exchange:
+  name: "Muscat Securities Market"
+  code: "OMAN"
+  country: "Oman"
+  base_url: "https://www.msx.om"
+  companies_url: "https://www.msx.om/companies.aspx"
+
+selectors:
+  # Required selectors for validation
+  company_name:
+    - "h1"
+    - "h2"
+    - ".company-title"
+    - "#companyName"
+  
+  company_cards:
+    - './/td[1]/a'
+    - './/td[2]/a'
+    - "a[href*='company']"
+  
+  company_grid:
+    - '//*[@id="companies-grid"]/div[2]/table/tbody/tr'
+    - '#companies-grid table tbody tr'
+    - 'table tbody tr'
+  
+  # Company listing page
+  companies_grid: '//*[@id="companies-grid"]/div[2]/table/tbody/tr'
+  symbol_link: ".//td[1]/a"
+  name_link: ".//td[2]/a" 
+  
+  # Pagination
+  next_button: '//a[@aria-label="Go to the next page"]'
+  disabled_class: "k-state-disabled"
+  
+  # Company profile page (append &se=2)
+  profile_selectors:
+    sub_sector: '//*[@id="ctl00_ContentPlaceHolder1_SubSectorLabel"]'
+    commercial_id: '//*[@id="ctl00_ContentPlaceHolder1_CommercialIDLabel"]'
+    isin: '//*[@id="ctl00_ContentPlaceHolder1_ISINLabel"]'
+    activity: '//*[@id="ctl00_ContentPlaceHolder1_ActivityLabel"]'
+    established_in: '//*[@id="ctl00_ContentPlaceHolder1_EstablishedInLabel"]'
+    listed_date: '//*[@id="ctl00_ContentPlaceHolder1_ListedDateLabel"]'
+    auditor: '//*[@id="ctl00_ContentPlaceHolder1_AuditorLabel"]'
+  
+  # Board members section
+  board_section: '//*[@id="ctl00_ContentPlaceHolder1_sectionunderline3"]/div/div[7]/div[1]/div/div[2]/ul'
+  board_positions: ".//li"
+  position_designation: "./span"
+  position_name: "./p/span"
+
+# Concurrent processing settings
+concurrency:
+  max_concurrent: 2
+  rate_limit_delay: 2.0
+  retry_attempts: 3
+  pool_size: 2
+
+navigation:
+  page_load_wait: 10
+  pagination_wait: 5
+  scroll_wait: 2
+
+# Oman-specific scraping settings  
+scraping:
+  max_retries: 3
+  retry_delay_seconds: 2

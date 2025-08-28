@@ -1,0 +1,80 @@
+# Common configuration for all scrapers
+scraping:
+  max_retries: 3
+  retry_delay_seconds: 5
+  default_timeout: 30
+  page_load_wait: 5
+  
+browser:
+  headless: true
+  window_size: "1920,1080"
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+  disable_images: false  # Changed to false by default for compatibility
+  disable_css: false     # Keep CSS enabled for modern sites
+  
+chrome_options:
+  - "--no-sandbox"
+  - "--disable-dev-shm-usage" 
+  - "--disable-blink-features=AutomationControlled"
+  - "--disable-extensions"
+  - "--start-maximized"
+
+# Async scraping configuration
+async:
+  max_concurrent_requests: 5
+  request_timeout: 30
+  connection_timeout: 10
+  max_retries: 3
+  retry_delay: 2.0
+  use_browser_pool: true
+  browser_pool_size: 3
+  enable_session_reuse: true
+
+# Streaming and memory management
+streaming:
+  chunk_size: 1  # Immediate streaming - no batching
+  max_memory_mb: 256  # Lower memory limit
+  gc_frequency: 5  # More frequent garbage collection
+  buffer_size: 1  # Minimal buffering
+  parallel_workers: 3
+  enable_streaming_output: true
+
+# Rate limiting configuration
+rate_limiting:
+  requests_per_second: 1.0
+  burst_limit: 5
+  adaptive: true
+  min_delay: 1.0
+  max_delay: 30.0
+  exponential_backoff: true
+  jitter: true
+  respect_retry_after: true
+
+# Circuit breaker configuration
+circuit_breaker:
+  failure_threshold: 5
+  recovery_timeout: 60
+  expected_exception: "Exception"
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_rotation: "midnight"
+  backup_count: 7
+
+output:
+  default_format: "xlsx"
+  timestamp_format: "%Y%m%d_%H%M%S"
+  
+translation:
+  source_language: "ar"
+  target_language: "en"
+  enabled: true
+
+data_validation:
+  required_company_fields:
+    - "name"
+    - "symbol"
+  required_board_fields:
+    - "name"
+    - "position"
